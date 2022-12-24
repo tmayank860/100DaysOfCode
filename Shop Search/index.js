@@ -17,6 +17,7 @@ const fetchProducts = () => {
     .then((data) => {
       document.querySelector(".loader").style.display = "none";
       allProducts = data;
+      localStorage.setItem("allProducts", JSON.stringify(allProducts));
       renderProducts(allProducts);
     });
 };
@@ -86,9 +87,11 @@ const updateCartCount = () => {
   localStorage.removeItem("totalCartItem");
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
+   if(key!=="allProducts"){
     const val = JSON.parse(localStorage.getItem(key));
     count = +count + +val.cartSize;
     console.log("ccccc",count, val.cartSize);
+   }
   }
   localStorage.setItem("totalCartItem", count);
 };
@@ -158,3 +161,4 @@ const renderProducts = (productsList) => {
 //   main.remove(loader);
 // }, 2000);
 fetchProducts();
+const navigateTroCart=()=>{ window.location.href="./cart.html"}
