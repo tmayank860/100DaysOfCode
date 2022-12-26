@@ -59,15 +59,82 @@ const renderProducts = () => {
             mainDiv.append(btnDiv);
             container.append(mainDiv);        
         }
+        getButtons();
+  getCross();
     });
 
     const OrderSummary = document.createElement("div");
+    const amount = document.createElement("div");
+    amount.classList.add("order-summary");
+    OrderSummary.classList.add("summary");
     const cartTotal = document.createElement("h3");
     cartTotal.textContent="Order Total";
     const totalAmount = document.createElement("h3");
     totalAmount.textContent= `$${orderTotal.toFixed(2)}`
-    OrderSummary.append(cartTotal);
-    OrderSummary.append(totalAmount);
+    amount.append(cartTotal);
+    amount.append(totalAmount);
+    OrderSummary.append(amount);
+    const placeOrder = document.createElement("button");
+    placeOrder.classList.add("btn");
+    placeOrder.textContent="Place Order";
+    OrderSummary.append(placeOrder);
     container.append(OrderSummary);
   };
+
+  // Add to cart
+const getButtons = () => {
+  buttons = document.getElementsByClassName("add-to-cart-btn");
+  const addToCart = (e) => {
+    const id = e.target.id;
+    const cartSize = document.getElementById(id).value;
+    console.log("iddddd",cartSize, id,e);
+    const cartElement = {
+      id: id,
+      cartSize: cartSize,
+    };
+    console.log("Cart Element", cartElement);
+    localStorage.setItem(id, JSON.stringify(cartElement));
+    // renderProducts(allProducts);
+    updateCartCount();
+      // location.reload();
+  };
+  for (let button of buttons) {
+    button.addEventListener("click", addToCart);
+  }
+};
+
+// Remove item from cart
+const getCross = () => {
+  const removeFromCart = (e) => {
+    const id = e.target.id;
+    console.log(id, localStorage);
+    localStorage.removeItem(id);
+    console.log(localStorage);
+    updateCartCount();
+      // location.reload();
+  };
+  const crossbtn = document.getElementsByClassName("remove-item");
+  for (let cross of crossbtn) {
+    cross.addEventListener("click", removeFromCart);
+  }
+};
+
+//cart count
+
+const updateCartCount = () => {
+  let count = 0;
+  // console.log("Inital",count);
+  localStorage.removeItem("totalCartItem");
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+   if(key!=="allProducts"){
+    const val = JSON.parse(localStorage.getItem(key));
+    // console.log("vsal",val);
+    count = +count + +val.cartSize;
+    // console.log("ccccc",count, val.cartSize);
+   }
+  }
+  localStorage.setItem("totalCartItem", count);
+};
+
   renderProducts();
