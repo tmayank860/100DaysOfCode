@@ -177,3 +177,27 @@ h3 {
 .btn:hover {
   transform: scale(1.05);
 }
+.explore-btn {
+  border: none;
+  padding: 10px 0px;
+  margin-top: 10px;
+  color: #fff;
+  font-weight: 900;
+  font-size: 16px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  width: 350px;
+  text-transform: capitalize;
+  border-radius: 10px;
+  background: green;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.explore-btn:hover {
+  transform: scale(1.05);
+}
+
+.emptyCart{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

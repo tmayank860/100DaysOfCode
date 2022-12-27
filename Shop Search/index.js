@@ -12,14 +12,16 @@ const fetchProducts = () => {
   // const response = await fetch('https://fakestoreapi.com/products');
   // const products = await response.json();
   // allProducts = products;
-  fetch("https://fakestoreapi.com/products")
-    .then((response) => response.json())
-    .then((data) => {
-      document.querySelector(".loader").style.display = "none";
-      allProducts = data;
-      localStorage.setItem("allProducts", JSON.stringify(allProducts));
-      renderProducts(allProducts);
-    });
+  localStorage.hasOwnProperty(allProducts)
+    ? (allProducts = localStorage.getItem("allProducts"))
+    : fetch("https://fakestoreapi.com/products")
+        .then((response) => response.json())
+        .then((data) => {
+          document.querySelector(".loader").style.display = "none";
+          allProducts = data;
+          localStorage.setItem("allProducts", JSON.stringify(allProducts));
+          renderProducts(allProducts);
+        });
 };
 
 // Search feature
@@ -56,7 +58,7 @@ const getButtons = () => {
     localStorage.setItem(id, JSON.stringify(cartElement));
     // renderProducts(allProducts);
     updateCartCount();
-      location.reload();
+    location.reload();
   };
   for (let button of buttons) {
     button.addEventListener("click", addToCart);
@@ -71,7 +73,7 @@ const getCross = () => {
     localStorage.removeItem(id);
     console.log(localStorage);
     updateCartCount();
-      location.reload();
+    location.reload();
   };
   const crossbtn = document.getElementsByClassName("crossDiv");
   for (let cross of crossbtn) {
@@ -83,15 +85,15 @@ const getCross = () => {
 
 const updateCartCount = () => {
   let count = 0;
-  console.log("Inital",count);
+  console.log("Inital", count);
   localStorage.removeItem("totalCartItem");
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-   if(key!=="allProducts"){
-    const val = JSON.parse(localStorage.getItem(key));
-    count = +count + +val.cartSize;
-    console.log("ccccc",count, val.cartSize);
-   }
+    if (key !== "allProducts") {
+      const val = JSON.parse(localStorage.getItem(key));
+      count = +count + +val.cartSize;
+      console.log("ccccc", count, val.cartSize);
+    }
   }
   localStorage.setItem("totalCartItem", count);
 };
@@ -161,4 +163,6 @@ const renderProducts = (productsList) => {
 //   main.remove(loader);
 // }, 2000);
 fetchProducts();
-const navigateTroCart=()=>{ window.location.href="./cart.html"}
+const navigateTroCart = () => {
+  window.location.href = "./cart.html";
+};
